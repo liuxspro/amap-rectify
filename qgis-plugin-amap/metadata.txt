@@ -1,0 +1,17 @@
+[general]
+name=AMAP
+qgisMinimumVersion=3.14
+description=高德瓦片地图（无偏）加载
+about=仅供测试,
+version=0.1.0-dev
+tags=basemap, xyz, 高德地图
+icon=images/icon.png
+experimental=False
+deprecated=False
+plugin_dependencies=pillow,httpx
+author=liuxspro
+email=liuxspro@gmail.com
+homepage=
+tracker=
+repository=
+changelog=
