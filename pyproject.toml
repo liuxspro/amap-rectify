@@ -5,7 +5,9 @@ description = "Rectify the map from GCJ-02 to WGS-84 coordinate system"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi>=0.115.13",
     "httpx>=0.28.1",
     "pillow>=11.2.1",
     "requests>=2.32.4",
+    "uvicorn>=0.34.3",
 ]

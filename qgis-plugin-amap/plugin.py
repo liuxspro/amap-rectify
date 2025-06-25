@@ -3,7 +3,7 @@ from urllib.parse import quote
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from .server import AmapServer
+from .server import ServerManager, app
 from .tile import amap_name
 from .utils import PluginDir, add_raster_layer, log_message
 
@@ -20,7 +20,7 @@ def add_map(mapid):
 class AMAP:
     def __init__(self, iface):
         self.iface = iface
-        self.server = None
+        self.server = ServerManager(app, port=8080)
         # 添加动作列表
         self.actions = []
         self.start_action = None
@@ -82,35 +82,21 @@ class AMAP:
         log_message("AMAP插件初始化完成")
 
     def start_server(self):
-        """启动服务器"""
-        if not self.server:
-            self.server = AmapServer(host="localhost", port=8080)
-
         if self.server.start():
             log_message("✅ 服务器启动成功！")
-            log_message("🌐 可以访问以下地址：")
-            log_message("   - http://localhost:8080")
-            log_message("   - http://localhost:8080/test")
-            log_message("   - http://localhost:8080/status")
             log_message(
-                "   - http://localhost:8080/tile/amap/<mapid>/<z>/<x>/<y> (返回PNG图片)"
+                f"🌐 可以访问以下地址：http://localhost:{self.server.port}/docs",
             )
-
             # 更新UI状态
             self.start_action.setEnabled(False)
             self.stop_action.setEnabled(True)
-            # self.add_map_cation.setEnabled(True)
             for action in self.add_map_cations:
                 action.setEnabled(True)
         else:
             log_message("❌ 服务器启动失败")
 
     def stop_server(self):
-        """停止服务器"""
-        if self.server:
-            self.server.stop()
-            self.server = None
-
+        if self.server.stop():
             # 更新UI状态
             self.start_action.setEnabled(True)
             self.stop_action.setEnabled(False)
@@ -123,9 +109,7 @@ class AMAP:
         log_message("卸载AMAP插件...")
 
         # 停止服务器
-        if self.server:
-            self.server.stop()
-            self.server = None
+        self.stop_server()
 
         # 移除菜单
         if self.menu:
