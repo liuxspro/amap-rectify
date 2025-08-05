@@ -1,0 +1,14 @@
+{
+  "amap-vec": {
+    "name": "高德地图 - 矢量地图",
+    "url": "https://wprd02.is.autonavi.com//appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}"
+  },
+  "amap-sat": {
+    "name": "高德地图 - 卫星影像",
+    "url": "https://wprd02.is.autonavi.com//appmaptile?lang=zh_cn&size=1&scale=1&style=6&x={x}&y={y}&z={z}"
+  },
+  "tencent-vec": {
+    "name": "腾讯地图 - 矢量地图",
+    "url": "http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0"
+  }
+}

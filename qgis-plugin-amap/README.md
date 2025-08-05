@@ -1,1 +1,0 @@
-see: https://garden.liuxs.pro/amap-rectify

@@ -1,25 +1,11 @@
 import threading
 import time
-from io import BytesIO
 from typing import Optional
 
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
 from uvicorn import Server, Config
 
-from .tile import get_tile_async
-from .utils import log_message
-
-app = FastAPI()
-
-
-@app.get("/tile/amap/{map_id}/{z}/{x}/{y}")
-async def tile(map_id, z: int, x: int, y: int):
-    image = await get_tile_async(x, y, z, map_id)
-    img_buffer = BytesIO()
-    image.save(img_buffer, format="PNG")
-    img_bytes = img_buffer.getvalue()
-    img_buffer.close()
-    return Response(content=img_bytes, media_type="image/png")
+from .qgis_utils import log_message
 
 
 class ServerManager:
@@ -48,8 +34,7 @@ class ServerManager:
                 host=self.host,
                 port=self.port,
                 lifespan="on",
-                # log_level="info",
-                log_config=None
+                log_config=None,
             )
             self.server = Server(config)
 

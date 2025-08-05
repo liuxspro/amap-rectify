@@ -7,7 +7,7 @@ CACHE_DIR = PluginDir.joinpath("./cache")
 
 
 def log_message(message):
-    QgsMessageLog.logMessage(f"{message}", "AMAP", Qgis.Info)
+    QgsMessageLog.logMessage(f"{message}", "GCJRectify", Qgis.Info)
 
 
 def add_raster_layer(uri: str, name: str, provider_type: str = "wms") -> None:

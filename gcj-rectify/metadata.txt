@@ -1,8 +1,8 @@
 [general]
-name=AMAP
+name=GCJRectify
 qgisMinimumVersion=3.14
-description=高德瓦片地图（无偏）加载
-about=高德瓦片地图（无偏）加载,启动本地服务后方可添加高德图层.仅供测试:)
+description=GCJ 坐标瓦片地图（无偏）加载
+about=GCJ 坐标高德瓦片地图（无偏）加载,启动本地服务后方可添加高德图层.仅供测试:)
 version=0.1.0-dev
 tags=basemap, xyz, 高德地图
 icon=images/icon.png
