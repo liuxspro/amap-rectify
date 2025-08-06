@@ -29,7 +29,7 @@ if cache_dir == "":
     set_cache_dir(cache_dir)
 cache_dir = Path(cache_dir)
 
-print(f"Cache directory: {cache_dir}")
+# print(f"Cache directory: {cache_dir}")
 app.state.cache_dir = cache_dir
 
 

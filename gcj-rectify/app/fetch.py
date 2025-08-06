@@ -33,7 +33,6 @@ async def close_async_client_async():
 def reset_async_client():
     """重置异步HTTP客户端，强制重新创建"""
     global _async_client
-    print("reset")
     if _async_client is not None:
         _async_client = None
 
