@@ -23,7 +23,6 @@ class ServerManager:
 
     def start(self) -> bool:
         # 如果服务器已在运行，先停止
-
         if self.is_running():
             self.stop()
 
@@ -60,6 +59,7 @@ class ServerManager:
         """内部方法：运行服务器"""
         try:
             self._is_running = True
+            # 确保在新线程中有新的事件循环
             self.server.run()
         except Exception as e:
             print(f"🚨 Server crashed: {str(e)}")

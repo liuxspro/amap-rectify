@@ -1,5 +1,9 @@
 import asyncio
 from io import BytesIO
+from pathlib import Path
+
+from PIL import Image
+
 from .fetch import fetch_tile
 from .utils import (
     xyz_to_bbox,
@@ -9,9 +13,6 @@ from .utils import (
     bytes_to_image,
     get_maps,
 )
-from PIL import Image
-from pathlib import Path
-
 
 map_data = get_maps()
 
@@ -68,7 +69,20 @@ async def get_tile_gcj_cached(
         image.save(tile_file_path, "PNG")
     except Exception as e:
         print(f"获取瓦片失败: {e}")
-        return
+        # 如果是事件循环错误，尝试重置客户端并重试
+        if "Event loop is closed" in str(e) or "RuntimeError" in str(e):
+            from .fetch import reset_async_client
+
+            reset_async_client()
+            try:
+                image_bytes = await get_tile_gcj(x, y, z, mapid)
+                image = bytes_to_image(image_bytes)
+                image.save(tile_file_path, "PNG")
+            except Exception as retry_e:
+                print(f"重试获取瓦片失败: {retry_e}")
+                return None
+        else:
+            return None
 
     return image_bytes
 
@@ -155,9 +169,26 @@ async def get_tile_wgs_cached(
         return image_to_bytes(image)
     # 如果缓存不存在，则下载瓦片并保存到缓存
     tile_file_path.parent.mkdir(parents=True, exist_ok=True)
-    image_bytes = await get_tile_wgs(x, y, z, mapid)
-    image = bytes_to_image(image_bytes)
-    image.save(tile_file_path, "PNG")
+    try:
+        image_bytes = await get_tile_wgs(x, y, z, mapid)
+        image = bytes_to_image(image_bytes)
+        image.save(tile_file_path, "PNG")
+    except Exception as e:
+        print(f"获取WGS瓦片失败: {e}")
+        # 如果是事件循环错误，尝试重置客户端并重试
+        if "Event loop is closed" in str(e) or "RuntimeError" in str(e):
+            from .fetch import reset_async_client
+
+            reset_async_client()
+            try:
+                image_bytes = await get_tile_wgs(x, y, z, mapid)
+                image = bytes_to_image(image_bytes)
+                image.save(tile_file_path, "PNG")
+            except Exception as retry_e:
+                print(f"重试获取WGS瓦片失败: {retry_e}")
+                return None
+        else:
+            return None
 
     return image_bytes
 

@@ -17,10 +17,9 @@ from qgis.core import QgsSettings
 
 from .app.main import app
 from .app.rectify import map_data
-from .app.fetch import close_async_client
-from .server import ServerManager
-
 from .qgis_utils import PluginDir, add_raster_layer, log_message, CACHE_DIR
+# from .app.fetch import close_async_client
+from .server import ServerManager
 
 
 def add_map(port, mapid):
@@ -219,16 +218,11 @@ class GCJRectifyPlugin:
             for action in self.add_map_cations:
                 action.setEnabled(False)
             log_message("✅ 服务器已停止")
-            close_async_client()
 
     def show_settings_dialog(self):
         # 默认值可根据实际情况传递
         dlg = SettingsDialog(self.iface.mainWindow())
-        if dlg.exec_():
-            settings = dlg.get_settings()
-            log_message(
-                f"设置已更新: 端口={settings['port']}, 缓存目录={settings['cache_dir']}"
-            )
+        dlg.exec_()
 
     def unload(self):
         """从QGIS界面卸载插件"""
